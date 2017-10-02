@@ -1,7 +1,3 @@
-#Write a function which takes as an input a word pair (a,b) and your frequency structure from #3. The function returns a probability of this pair (a,b) and a probability of (a,-b), i.e. all the word pairs where word “a” is in the first position and in the second 
-#position is the forward different than “b”.
-#--> should this function take any other input to make the calculations more efficient if we call it many times for different word pairs but frequencies are collected based on the same corpus?
-
 import re
 from heapq import nlargest
 
@@ -38,16 +34,20 @@ class TaskFour():
         return dict
 
     def getProbability(self, a, b, dict):
-        ab = dict[tuple((a,b))]/len(dict)
+        sum = 0
+        for i in dict.values():
+            sum += i
+        ab = dict[tuple((a,b))]/sum
         print("The probability of the pair("+a+", "+b+") is: " + str(ab))
 
         i=0
         for w1, w2 in dict:
             if(w1 == a and w2 != b):
-                #there might be more pairs with the first word there. Such as "the animal", "the rabbit" etc...
                 i += dict[tuple((w1,w2))]
-
-        aMinusB = i/len(dict)
+        sum2 = 0
+        for i in dict.values():
+            sum2 += i
+        aMinusB = i/sum2
         print("The probability of the pair("+a+", -"+b+") is: " + str(aMinusB))
 
 
