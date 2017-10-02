@@ -18,37 +18,12 @@ class TaskFour():
         except:
             print("Couldn't load the corpus")
 
-    def analyzeFreq(self):
-        dict = {}
-        for line in self.file:
-            #Spliting the lines into words using regular expressions
-            words = re.findall(r"[\w]+", line)
-            #for each word in the array check if it's in the global array of words, otherwise append it and increment the freq array at it' point
-            for i in range(0, len(words)):
-                if(i != len(words)-1):
-                    w1 = words[i].lower()
-                    w2 = words[i+1].lower()
-
-                    tp = tuple((w1,w2))
-
-                    if(tp in dict):
-                        dict[tp] += 1
-                    else:
-                        dict[tp] = 1
-
-        top = nlargest(10, dict.values())
-        toReturn = []
-        for w,w1 in dict.items():
-            if(w1 in top):
-                toReturn.append(tuple((w,w1)))
-        return toReturn
-
     def getPairs(self):
         dict = {}
         for line in self.file:
             #Spliting the lines into words using regular expressions
             words = re.findall(r"[\w]+", line)
-            #for each word in the array check if it's in the global array of words, otherwise append it and increment the freq array at it' point
+
             for i in range(0, len(words)):
                 if(i != len(words)-1):
                     w1 = words[i].lower()
@@ -69,7 +44,8 @@ class TaskFour():
         i=0
         for w1, w2 in dict:
             if(w1 == a and w2 != b):
-                i = dict[tuple((w1,w2))]
+                #there might be more pairs with the first word there. Such as "the animal", "the rabbit" etc...
+                i += dict[tuple((w1,w2))]
 
         aMinusB = i/len(dict)
         print("The probability of the pair("+a+", -"+b+") is: " + str(aMinusB))
@@ -81,6 +57,5 @@ class TaskFour():
 
 a = TaskFour()
 dict = a.getPairs()
-print(a.analyzeFreq())
 print(dict)
 print(a.getProbability('the', 'department', dict))
